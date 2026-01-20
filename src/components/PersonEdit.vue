@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { store } from '@/store';
+import InputNumber from './InputNumber.vue';
 
 const route = useRoute();
+
+const inputFocused = ref(false);
 
 const person = computed(() => {
     const id = Number(route.params.id);
     return store.people.find((p) => p.id === id);
 });
-
-function updateAge(value: string) {
-    if (person.value) {
-        person.value.ageInHours = Number(value) || 0;
-    }
-}
 </script>
 
 <template>
@@ -27,7 +24,11 @@ function updateAge(value: string) {
             <img
                 src="/cat.png"
                 :alt="person.name"
-                class="w-14 h-14 rounded-full border-2 border-violet-500 object-cover"
+                class="w-14 h-14 rounded-full object-cover"
+                :class="{
+                    'border-2 border-violet-500': inputFocused,
+                    'border-0': !inputFocused,
+                }"
             />
             <div>
                 <label
@@ -37,15 +38,9 @@ function updateAge(value: string) {
                     {{ person.name.toUpperCase() }} IS
                 </label>
                 <div class="flex items-center gap-2">
-                    <input
-                        id="hours-input"
-                        type="text"
-                        :value="person.ageInHours"
-                        @input="
-                            updateAge(($event.target as HTMLInputElement).value)
-                        "
-                        class="border border-gray-300 rounded px-2 py-1 text-lg outline-none"
-                        placeholder="0"
+                    <InputNumber
+                        v-model="person.ageInHours"
+                        v-model:isFocused="inputFocused"
                     />
                     <span class="text-gray-600">hours old</span>
                 </div>

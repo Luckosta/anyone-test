@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { store } from '@/store';
+import InputNumber from './InputNumber.vue';
+import { ref } from 'vue';
 
 function updateMinimumAge(value: string) {
     store.minimumAgeInMonths = Number(value) || 0;
 }
+
+const inputFocused = ref(false);
 </script>
 
 <template>
@@ -22,17 +26,11 @@ function updateMinimumAge(value: string) {
                 MINIMUM AGE
             </label>
             <div class="flex items-center gap-2">
-                <input
+                <InputNumber
                     id="min-age-input"
-                    type="text"
-                    :value="store.minimumAgeInMonths"
-                    @input="
-                        updateMinimumAge(
-                            ($event.target as HTMLInputElement).value,
-                        )
-                    "
-                    class="border border-gray-300 rounded px-2 py-1 text-lg outline-none"
-                    placeholder="0"
+                    v-model="store.minimumAgeInMonths"
+                    v-model:isFocused="inputFocused"
+					@input="updateMinimumAge"
                 />
                 <span class="text-gray-600">months</span>
             </div>

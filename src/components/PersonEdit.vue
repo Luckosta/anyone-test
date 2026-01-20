@@ -21,30 +21,29 @@ const person = computed(() => {
         >
 
         <div class="flex items-center gap-3">
-            <img
-                src="/cat.png"
-                :alt="person.name"
-                class="w-14 h-14 rounded-full object-cover"
-                :class="{
-                    'border-2 border-violet-500': inputFocused,
-                    'border-0': !inputFocused,
-                }"
-            />
-            <div>
-                <label
-                    for="hours-input"
-                    class="block text-sm font-bold tracking-wide text-gray-700"
-                >
-                    {{ person.name.toUpperCase() }} IS
-                </label>
-                <div class="flex items-center gap-2">
-                    <InputNumber
-                        v-model="person.ageInHours"
-                        v-model:isFocused="inputFocused"
-                    />
-                    <span class="text-gray-600">hours old</span>
-                </div>
+            <div class="relative w-20 h-20">
+                <img
+                    src="/cat.png"
+                    :alt="person.name"
+                    class="w-20 h-20 rounded-full object-cover"
+                />
+                <div
+                    class="pointer-events-none absolute -inset-0.75 rounded-full border border-primary"
+                    :class="{
+                        'opacity-100 scale-100': inputFocused,
+                        'opacity-0 scale-95': !inputFocused,
+                    }"
+                ></div>
             </div>
+
+            <InputNumber
+                v-model="person.ageInHours"
+                v-model:isFocused="inputFocused"
+                :label="person.name + ' is'"
+                label-color="text-dark"
+                active-label-color="text-primary"
+                caption="hours old"
+            />
         </div>
     </div>
 

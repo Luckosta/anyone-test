@@ -18,22 +18,13 @@ const inputFocused = ref(false);
 
         <h1 class="text-xl font-bold text-gray-700">Settings</h1>
 
-        <div>
-            <label
-                for="min-age-input"
-                class="block text-sm font-bold tracking-wide text-gray-700"
-            >
-                MINIMUM AGE
-            </label>
-            <div class="flex items-center gap-2">
-                <InputNumber
-                    id="min-age-input"
-                    v-model="store.minimumAgeInMonths"
-                    v-model:isFocused="inputFocused"
-					@input="updateMinimumAge"
-                />
-                <span class="text-gray-600">months</span>
-            </div>
-        </div>
+        <InputNumber
+            id="min-age-input"
+            v-model="store.minimumAgeInMonths"
+            v-model:isFocused="inputFocused"
+            :label="'MINIMUM AGE'"
+            caption="months"
+            @input="updateMinimumAge"
+        />
     </div>
 </template>

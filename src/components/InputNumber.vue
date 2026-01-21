@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatValue } from '@/utils/format-value';
 import { hasOnlyDigits } from '@/utils/has-only-digits';
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick, watch } from 'vue';
 
 const props = defineProps<{
     modelValue: number;
@@ -16,8 +16,9 @@ const emit = defineEmits<{
 }>();
 
 const isFocused = ref(false);
-
 const rawValue = ref(String(props.modelValue));
+const textRef = ref<HTMLElement | null>(null);
+const textWidth = ref(0);
 
 const formattedValue = computed(() => {
     if (!rawValue.value) return '';
@@ -25,9 +26,20 @@ const formattedValue = computed(() => {
 });
 
 const inputWidth = computed(() => {
-    const len = formattedValue.value.length;
-    return Math.max(props.minWidth || 72, len * 10);
+    const baseWidth = textWidth.value || 72;
+    return Math.max(props.minWidth || 72, baseWidth + 8);
 });
+
+watch(
+    formattedValue,
+    async () => {
+        await nextTick();
+        if (textRef.value) {
+            textWidth.value = textRef.value.offsetWidth;
+        }
+    },
+    { immediate: true },
+);
 
 function digitsOnly(value: string) {
     return value.replace(/\D+/g, '');
@@ -107,6 +119,7 @@ function handleBlur() {
         </div>
 
         <span
+            ref="textRef"
             class="absolute invisible whitespace-pre px-2 pr-4 text-lg"
         >
             {{ formattedValue }}

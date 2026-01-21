@@ -20,7 +20,7 @@ const person = computed(() => {
             >&larr; Back</router-link
         >
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-[16px]">
             <div class="relative w-20 h-20">
                 <img
                     src="/cat.png"

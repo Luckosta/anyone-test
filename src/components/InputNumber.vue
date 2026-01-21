@@ -17,7 +17,9 @@ const emit = defineEmits<{
 
 const isFocused = ref(false);
 const rawValue = ref(String(props.modelValue));
+
 const textRef = ref<HTMLElement | null>(null);
+
 const textWidth = ref(0);
 
 const formattedValue = computed(() => {
@@ -66,12 +68,14 @@ function handleBlur() {
     isFocused.value = false;
     emit('update:isFocused', false);
 }
+
 </script>
 
 <template>
     <div class="relative inline-flex flex-col">
         <label
             v-if="label"
+			for="input-number"
             class="mb-3 font-[Koulen] text-base leading-3.75"
             :class="[isFocused ? 'text-primary' : 'text-dark']"
         >
@@ -82,13 +86,14 @@ function handleBlur() {
             <input
                 type="text"
                 inputmode="numeric"
+				id="input-number"
                 placeholder="0"
                 :value="formattedValue"
                 @input="handleInput"
                 @focus="handleFocus"
                 @blur="handleBlur"
                 @beforeinput="handleBeforeInput"
-                class="absolute left-0 top-0 z-10 h-11 pr-4 text-lg outline-none"
+                class="absolute text-dark font-medium left-0 top-0 z-10 h-11 pr-4 text-lg outline-none"
                 :style="{ width: inputWidth + 'px' }"
                 :class="[
                     isFocused
@@ -109,7 +114,7 @@ function handleBlur() {
 
             <span
                 v-if="caption"
-                class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-lg select-none"
+                class="absolute text-dark top-1/2 -translate-y-1/2 whitespace-nowrap text-lg select-none"
                 :style="{
                     left: inputWidth + 12 + 'px',
                 }"
